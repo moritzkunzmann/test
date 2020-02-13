@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <script type="application/shiny-singletons"></script>
+  <script type="application/html-dependencies">json2[2014.02.04];jquery[3.4.1];shiny[1.4.0];font-awesome[5.3.1];htmlwidgets[1.5.1];datatables-css[0.0.0];datatables-binding[0.12];crosstalk[1.0.0];bootstrap[3.4.1];AdminLTE[2.0.6];shinydashboard[0.7.1]</script>
+<script src="shared/json2-min.js"></script>
+<script src="shared/jquery.min.js"></script>
+<link href="shared/shiny.css" rel="stylesheet" />
+<script src="shared/shiny.min.js"></script>
+<link href="font-awesome-5.3.1/css/all.min.css" rel="stylesheet" />
+<link href="font-awesome-5.3.1/css/v4-shims.min.css" rel="stylesheet" />
+<script src="htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="datatables-binding-0.12/datatables.js"></script>
+<link href="crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="shared/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<script src="shared/bootstrap/js/bootstrap.min.js"></script>
+<script src="shared/bootstrap/shim/html5shiv.min.js"></script>
+<script src="shared/bootstrap/shim/respond.min.js"></script>
+<link href="AdminLTE-2.0.6/AdminLTE.min.css" rel="stylesheet" />
+<link href="AdminLTE-2.0.6/_all-skins.min.css" rel="stylesheet" />
+<script src="AdminLTE-2.0.6/app.min.js"></script>
+<link href="shinydashboard-0.7.1/shinydashboard.css" rel="stylesheet" />
+<script src="shinydashboard-0.7.1/shinydashboard.min.js"></script>  <title>Extraction of Biological Targets</title>
+
+</head>
+
+<body class="skin-green" style="min-height: 611px;">
+  <div class="wrapper">
+    <header class="main-header">
+      <span class="logo">Extraction of Biological Targets</span>
+      <nav class="navbar navbar-static-top" role="navigation">
+        <span style="display:none;">
+          <i class="fa fa-bars"></i>
+        </span>
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+          <span class="sr-only">Toggle navigation</span>
+        </a>
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav"></ul>
+        </div>
+      </nav>
+    </header>
+    <aside id="sidebarCollapsed" class="main-sidebar" data-collapsed="false">
+      <section id="sidebarItemExpanded" class="sidebar">
+        <ul class="sidebar-menu">
+          <li>
+            <a href="#shiny-tab-uploadTab" data-toggle="tab" data-value="uploadTab">
+              <i class="fa fa-upload"></i>
+              <span>Upload Compound File</span>
+            </a>
+          </li>
+          <li>
+            <a href="#shiny-tab-test" data-toggle="tab" data-value="test">
+              <i class="fa fa-search"></i>
+              <span>Search Databases</span>
+            </a>
+          </li>
+          <li>
+            <a href="#shiny-tab-additional" data-toggle="tab" data-value="additional">
+              <span>Additional Info</span>
+            </a>
+          </li>
+          <li>
+            <a href="#shiny-tab-merged" data-toggle="tab" data-value="merged">
+              <span>All Info</span>
+            </a>
+          </li>
+          <div id="Tab" class="sidebarMenuSelectedTabItem" data-value="null"></div>
+        </ul>
+        <div class="form-group shiny-input-container">
+          <label class="control-label" for="sourceCompounds">Choose File with Compounds by Plant</label>
+          <div class="input-group">
+            <label class="input-group-btn">
+              <span class="btn btn-default btn-file">
+                Browse...
+                <input id="sourceCompounds" name="sourceCompounds" type="file" style="display: none;"/>
+              </span>
+            </label>
+            <input type="text" class="form-control" placeholder="No file selected" readonly="readonly"/>
+          </div>
+          <div id="sourceCompounds_progress" class="progress progress-striped active shiny-file-input-progress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div class="form-group shiny-input-container">
+          <label class="control-label" for="colCompoundName">Select Header for Compound Names</label>
+          <input id="colCompoundName" type="text" class="form-control" value=""/>
+        </div>
+        <div class="form-group shiny-input-container">
+          <label class="control-label" for="colPubChemCID">Select Header for PubChem CID</label>
+          <input id="colPubChemCID" type="text" class="form-control" value=""/>
+        </div>
+        <div class="form-group shiny-input-container">
+          <label class="control-label" for="uploadPharmmapper">Choose PharmMapper Result Files</label>
+          <div class="input-group">
+            <label class="input-group-btn">
+              <span class="btn btn-default btn-file">
+                Browse...
+                <input id="uploadPharmmapper" name="uploadPharmmapper" type="file" style="display: none;" multiple="multiple"/>
+              </span>
+            </label>
+            <input type="text" class="form-control" placeholder="No file selected" readonly="readonly"/>
+          </div>
+          <div id="uploadPharmmapper_progress" class="progress progress-striped active shiny-file-input-progress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div class="form-group shiny-input-container">
+          <label class="control-label" for="uploadLiterature">Choose manually researched Targets</label>
+          <div class="input-group">
+            <label class="input-group-btn">
+              <span class="btn btn-default btn-file">
+                Browse...
+                <input id="uploadLiterature" name="uploadLiterature" type="file" style="display: none;"/>
+              </span>
+            </label>
+            <input type="text" class="form-control" placeholder="No file selected" readonly="readonly"/>
+          </div>
+          <div id="uploadLiterature_progress" class="progress progress-striped active shiny-file-input-progress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+      </section>
+    </aside>
+    <div class="content-wrapper">
+      <section class="content">
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane" id="shiny-tab-uploadTab">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Preview uploaded File</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div id="preview" style="width:100%; height:auto; " class="datatables html-widget html-widget-output"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Preview of processed File</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div id="render" style="width:100%; height:auto; " class="datatables html-widget html-widget-output"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="shiny-tab-test">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Interactions NPASS</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div id="NPASS" style="width:100%; height:auto; " class="datatables html-widget html-widget-output"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Interactions DrugBank</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div id="DrugBank" style="width:100%; height:auto; " class="datatables html-widget html-widget-output"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Interactions BindingDB</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div id="BindingDB" style="width:100%; height:auto; " class="datatables html-widget html-widget-output"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="shiny-tab-additional">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Interactions Pharmmapper</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div id="PharmMapper" style="width:100%; height:auto; " class="datatables html-widget html-widget-output"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">Interactions Literature</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div id="Literature" style="width:100%; height:auto; " class="datatables html-widget html-widget-output"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="shiny-tab-merged">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title">All Interactions</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div id="allInteractions" style="width:100%; height:auto; " class="datatables html-widget html-widget-output"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+
+</html>
+
