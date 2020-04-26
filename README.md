@@ -6,3 +6,4 @@ adding a line
 lasdkfjlk
 
 ## new instance
+testing credential helper
